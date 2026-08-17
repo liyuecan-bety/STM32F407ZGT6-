@@ -1,0 +1,27 @@
+--cpu=Cortex-M4.fp
+"hal_01_led\startup_stm32f407xx.o"
+"hal_01_led\main.o"
+"hal_01_led\gpio.o"
+"hal_01_led\stm32f4xx_it.o"
+"hal_01_led\stm32f4xx_hal_msp.o"
+"hal_01_led\bsp_led.o"
+"hal_01_led\bsp_key.o"
+"hal_01_led\bsp_exti.o"
+"hal_01_led\stm32f4xx_hal_rcc.o"
+"hal_01_led\stm32f4xx_hal_rcc_ex.o"
+"hal_01_led\stm32f4xx_hal_flash.o"
+"hal_01_led\stm32f4xx_hal_flash_ex.o"
+"hal_01_led\stm32f4xx_hal_flash_ramfunc.o"
+"hal_01_led\stm32f4xx_hal_gpio.o"
+"hal_01_led\stm32f4xx_hal_dma_ex.o"
+"hal_01_led\stm32f4xx_hal_dma.o"
+"hal_01_led\stm32f4xx_hal_pwr.o"
+"hal_01_led\stm32f4xx_hal_pwr_ex.o"
+"hal_01_led\stm32f4xx_hal_cortex.o"
+"hal_01_led\stm32f4xx_hal.o"
+"hal_01_led\stm32f4xx_hal_exti.o"
+"hal_01_led\system_stm32f4xx.o"
+--strict --scatter "HAL_01_LED\HAL_01_LED.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "HAL_01_LED.map" -o HAL_01_LED\HAL_01_LED.axf
