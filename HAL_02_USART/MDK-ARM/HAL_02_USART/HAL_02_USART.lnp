@@ -1,0 +1,27 @@
+--cpu=Cortex-M4.fp
+"hal_02_usart\startup_stm32f407xx.o"
+"hal_02_usart\main.o"
+"hal_02_usart\gpio.o"
+"hal_02_usart\stm32f4xx_it.o"
+"hal_02_usart\stm32f4xx_hal_msp.o"
+"hal_02_usart\bsp_usart.o"
+"hal_02_usart\bsp_led.o"
+"hal_02_usart\stm32f4xx_hal_rcc.o"
+"hal_02_usart\stm32f4xx_hal_rcc_ex.o"
+"hal_02_usart\stm32f4xx_hal_flash.o"
+"hal_02_usart\stm32f4xx_hal_flash_ex.o"
+"hal_02_usart\stm32f4xx_hal_flash_ramfunc.o"
+"hal_02_usart\stm32f4xx_hal_gpio.o"
+"hal_02_usart\stm32f4xx_hal_dma_ex.o"
+"hal_02_usart\stm32f4xx_hal_dma.o"
+"hal_02_usart\stm32f4xx_hal_pwr.o"
+"hal_02_usart\stm32f4xx_hal_pwr_ex.o"
+"hal_02_usart\stm32f4xx_hal_cortex.o"
+"hal_02_usart\stm32f4xx_hal.o"
+"hal_02_usart\stm32f4xx_hal_exti.o"
+"hal_02_usart\stm32f4xx_hal_uart.o"
+"hal_02_usart\system_stm32f4xx.o"
+--strict --scatter "HAL_02_USART\HAL_02_USART.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "HAL_02_USART.map" -o HAL_02_USART\HAL_02_USART.axf
