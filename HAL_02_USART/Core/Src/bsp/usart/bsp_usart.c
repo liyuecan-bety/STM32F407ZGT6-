@@ -1,9 +1,46 @@
 #include "usart\bsp_usart.h"
+#include <stdio.h>
 
-/* ¶¨Òå±äÁ¿ */
-uint8_t  g_usart_rx_buf[USART_REC_LEN];  // ´®¿Ú½ÓÊÕ»º³åÇø
-uint16_t g_usart_rx_sta = 0;             // ½ÓÊÕ×´Ì¬±ê¼Ç
-uint8_t  g_rx_buffer[RXBUFFERSIZE];      // HAL¿â½ÓÊÕ»º³å
+/* ä»¥ä¸‹ä»£ç æ”¯æŒprintfå‡½æ•°, æ— éœ€é€‰æ‹©use MicroLIB */
+#if 1
+#pragma import(__use_no_semihosting)               /* å…³é—­åŠä¸»æœºæ¨¡å¼ */
+
+struct __FILE
+{
+    int handle;
+};
+
+FILE __stdout;
+
+void _sys_exit(int x)
+{
+    x = x;
+}
+
+int _ttywrch(int ch)
+{
+    ch = ch;
+    return ch;
+}
+
+char *_sys_command_string(char *cmd, int len)
+{
+    return NULL;
+}
+
+/* é‡å®šå‘fputcå‡½æ•°, printfæœ€ç»ˆä¼šé€šè¿‡è°ƒç”¨fputcæŠŠå­—ç¬¦å‘é€å‡ºåŽ» */
+int fputc(int ch, FILE *f)
+{
+    while ((USART1->SR & 0X40) == 0);               /* ç­‰å¾…ä¸Šä¸€ä¸ªå­—ç¬¦å‘é€å®Œæˆ */
+    USART1->DR = (uint8_t)ch;                       /* å°†è¦å‘é€çš„å­—ç¬¦å†™å…¥DRå¯„å­˜å™¨ */
+    return ch;
+}
+#endif
+
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+uint8_t  g_usart_rx_buf[USART_REC_LEN];  // ï¿½ï¿½ï¿½Ú½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½
+uint16_t g_usart_rx_sta = 0;             // ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½
+uint8_t  g_rx_buffer[RXBUFFERSIZE];      // HALï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 UART_HandleTypeDef huart1;
 void USART1_Init(void)
 {
@@ -27,6 +64,10 @@ void USART1_Init(void)
   {
     Error_Handler();
   }
+
+  /* ä½¿èƒ½ä¸²å£æŽ¥æ”¶ä¸­æ–­, å¼€å¯æŽ¥æ”¶åŽæ‰ä¼šè¿›å…¥ HAL_UART_RxCpltCallback å›žè°ƒ */
+  HAL_UART_Receive_IT(&huart1, (uint8_t *)g_rx_buffer, RXBUFFERSIZE);
+	
   /* USER CODE BEGIN USART1_Init 2 */
 
   /* USER CODE END USART1_Init 2 */
@@ -69,22 +110,22 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if(huart->Instance == USART1)             /* Èç¹ûÊÇ´®¿Ú1 */
+    if(huart->Instance == USART1)             /* ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½1 */
     {
-        if((g_usart_rx_sta & 0x8000) == 0)      /* ½ÓÊÕÎ´Íê³É */
+        if((g_usart_rx_sta & 0x8000) == 0)      /* ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ */
         {
-            if(g_usart_rx_sta & 0x4000)         /* ½ÓÊÕµ½ÁË0x0d */
+            if(g_usart_rx_sta & 0x4000)         /* ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½0x0d */
             {
                 if(g_rx_buffer[0] != 0x0a) 
                 {
-                    g_usart_rx_sta = 0;         /* ½ÓÊÕ´íÎó,ÖØÐÂ¿ªÊ¼ */
+                    g_usart_rx_sta = 0;         /* ï¿½ï¿½ï¿½Õ´ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Â¿ï¿½Ê¼ */
                 }
                 else 
                 {
-                    g_usart_rx_sta |= 0x8000;   /* ½ÓÊÕÍê³ÉÁË */
+                    g_usart_rx_sta |= 0x8000;   /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
                 }
             }
-            else                                /* »¹Ã»ÊÕµ½0X0D */
+            else                                /* ï¿½ï¿½Ã»ï¿½Õµï¿½0X0D */
             {
                 if(g_rx_buffer[0] == 0x0d)
                 {
@@ -96,7 +137,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                     g_usart_rx_sta++;
                     if(g_usart_rx_sta > (USART_REC_LEN - 1))
                     {
-                        g_usart_rx_sta = 0;     /* ½ÓÊÕÊý¾Ý´íÎó,ÖØÐÂ¿ªÊ¼½ÓÊÕ */
+                        g_usart_rx_sta = 0;     /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Â¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ */
                     }
                 }
             }
