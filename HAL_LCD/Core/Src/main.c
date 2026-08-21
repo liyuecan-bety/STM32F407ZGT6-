@@ -24,6 +24,7 @@
 #include "usart/bsp_usart.h"
 #include "led/bsp_led.h"
 #include <stdio.h>
+#include "iic/iic.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -96,6 +97,7 @@ int main(void)
 	LED_GPIO_Init();
 	lcd_init();
 	USART1_Init();
+	I2C1_Init();
 	//lcd_show_string(120,240,150,210,24,"LED Show STRING",BLUE);
 	
   /* USER CODE END 2 */
