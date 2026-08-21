@@ -21,6 +21,9 @@
 #include "gpio.h"
 #include "fsmc.h"
 #include "lcd/lcd.h"
+#include "usart/bsp_usart.h"
+#include "led/bsp_led.h"
+#include <stdio.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -64,7 +67,8 @@ void SystemClock_Config(void);
   */
 int main(void)
 {
-
+	uint8_t len;
+	uint16_t times = 0;
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -89,8 +93,11 @@ int main(void)
   MX_GPIO_Init();
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
+	LED_GPIO_Init();
 	lcd_init();
-	lcd_show_string(120,240,150,210,24,"LED Show STRING",BLUE);
+	USART1_Init();
+	//lcd_show_string(120,240,150,210,24,"LED Show STRING",BLUE);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,7 +105,32 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+		if (g_usart_rx_sta & 0x8000)         /* 接收到了数据? */
+        {
+            len = g_usart_rx_sta & 0x3fff;  /* 得到此次接收到的数据长度 */
+            printf("\r\n您发送的消息为:\r\n");
+            HAL_UART_Transmit(&huart1,(uint8_t*)g_usart_rx_buf,len,1000);    /* 发送接收到的数据 */
+            lcd_show_string(10, 40, 240, 20, 32, (char *)g_usart_rx_buf, BLUE);
+						while(__HAL_UART_GET_FLAG(&huart1,UART_FLAG_TC)!=SET);           /* 等待发送结束 */
+            printf("\r\n\r\n");             /* 插入换行 */
+            g_usart_rx_sta = 0;
+        }
+        else
+        {
+            times++;
 
+            if (times % 5000 == 0)
+            {
+                printf("\r\n正点原子 STM32开发板 串口实验\r\n");
+                printf("正点原子@ALIENTEK\r\n\r\n\r\n");
+            }
+
+            if (times % 200 == 0) printf("请输入数据,以回车键结束\r\n");
+
+            if (times % 30  == 0) LED_F9_Toggle; /* 闪烁LED,提示系统正在运行. */
+
+            HAL_Delay(10);
+        }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

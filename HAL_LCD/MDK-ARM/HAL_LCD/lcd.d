@@ -1,6 +1,6 @@
 hal_lcd\lcd.o: ..\Core\Src\bsp\lcd\lcd.c
 hal_lcd\lcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-hal_lcd\lcd.o: ..\Core\Inc\BSP\lcd/lcd.h
+hal_lcd\lcd.o: ../Core/Inc/BSP/lcd/lcd.h
 hal_lcd\lcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 hal_lcd\lcd.o: ../Core/Inc/main.h
 hal_lcd\lcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
@@ -32,5 +32,6 @@ hal_lcd\lcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sram.h
 hal_lcd\lcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_fsmc.h
 hal_lcd\lcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 hal_lcd\lcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
-hal_lcd\lcd.o: ..\Core\Inc\BSP\lcd/lcdfont.h
-hal_lcd\lcd.o: ..\Core\Inc\BSP\lcd/lcd_ex.c
+hal_lcd\lcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+hal_lcd\lcd.o: ../Core/Inc/BSP/lcd/lcdfont.h
+hal_lcd\lcd.o: ../Core/Inc/BSP/lcd/lcd_ex.c

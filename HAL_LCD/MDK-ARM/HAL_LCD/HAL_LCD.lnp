@@ -1,6 +1,8 @@
 --cpu=Cortex-M4.fp
 "hal_lcd\startup_stm32f407xx.o"
 "hal_lcd\lcd.o"
+"hal_lcd\bsp_usart.o"
+"hal_lcd\bsp_led.o"
 "hal_lcd\main.o"
 "hal_lcd\gpio.o"
 "hal_lcd\fsmc.o"
@@ -24,6 +26,7 @@
 "hal_lcd\stm32f4xx_hal_cortex.o"
 "hal_lcd\stm32f4xx_hal.o"
 "hal_lcd\stm32f4xx_hal_exti.o"
+"hal_lcd\stm32f4xx_hal_uart.o"
 "hal_lcd\system_stm32f4xx.o"
 --strict --scatter "HAL_LCD\HAL_LCD.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
